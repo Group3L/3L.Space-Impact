@@ -12,7 +12,7 @@ public class GameDataObject implements Serializable {
     private int bulletCount;
     private int damage;
 
-    public GameDataObject(int health, int coin, int bulletCount, int damage){
+    public GameDataObject(int health, int coin, int damage, int bulletCount){
         this.health = health;
         this.coin = coin;
         this.bulletCount = bulletCount;

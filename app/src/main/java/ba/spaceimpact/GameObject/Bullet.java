@@ -11,7 +11,7 @@ public class Bullet {
     private RectF rect;
     private boolean userBullet;
     public final int UP = 0;
-
+    private int damage;
 
     int heading = -1;
     float speed =  550;
@@ -21,14 +21,16 @@ public class Bullet {
 
     private boolean isActive;
 
-    public Bullet(int screenY, boolean userBullet) {
-
+    public Bullet(int screenY, boolean userBullet, int damage) {
+        this.damage = damage;
         this.userBullet = userBullet;
         height = screenY / 100;
         isActive = false;
 
         rect = new RectF();
     }
+
+    public int getDamage(){return damage;}
 
     public boolean isUserBullet() {
         return userBullet;

@@ -104,7 +104,7 @@ public class GameEngine implements Runnable, Serializable {
             if(random.nextInt(3) > 0){
                 int speedY = random.nextInt(31) + 10;
 
-                EnemySpaceship e = new EnemySpaceship(5, 2, posX, posY, 0, speedY, context);
+                EnemySpaceship e = new EnemySpaceship(1, 2, posX, posY, 0, speedY, context);
 
                 //Checking if new spaceship intersects with existing ones
                 if (gameObjects.size() > 0) {
@@ -202,13 +202,13 @@ public class GameEngine implements Runnable, Serializable {
                 }
             }
 
-            drawBottomDock( canvas, dockHeight, 40, 50);
+            drawBottomDock( canvas);
 
             surfaceHolder.unlockCanvasAndPost(canvas);
         }
     }
 
-    private void drawBottomDock( Canvas canvas, float dockH, int bulletCount, int health){
+    private void drawBottomDock( Canvas canvas){
         canvas.drawRect( 0, (int)(pixelY - dockHeight), (int)(pixelX), (int)pixelY,
                          new Paint( Color.BLACK));
 
@@ -265,6 +265,19 @@ public class GameEngine implements Runnable, Serializable {
                 GameView.bullet[i].setInactive();
             }
         }
+
+       for( int j = 0; j < gameObjects.size(); j++){
+            if( gameObjects.get(j) instanceof EnemySpaceship){
+                for( int i = 0; i < GameView.bullet.length; i++){
+                    if(GameView.bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(GameView.bullet[i].getRect())){
+                        Log.d("Collision","Between Enemy and Bullet");
+                        ((EnemySpaceship) gameObjects.get(j)).getHit(GameView.bullet[i].getDamage());
+                        GameView.bullet[i].setInactive();
+                    }
+                }
+            }
+        }
+
 
         //collision detection
         for (int i = 0; i < gameObjects.size(); i++) {

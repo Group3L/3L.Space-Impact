@@ -10,6 +10,6 @@ public interface SpaceShip extends GameObject{
 
     public void move(float x, float y);
     public void shoot();
-
+    public void getHit(int amount);
 
 }

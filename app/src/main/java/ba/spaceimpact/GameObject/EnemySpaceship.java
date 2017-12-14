@@ -75,7 +75,7 @@ public class EnemySpaceship implements NPC{
     //@Override
     public void update() {
 
-        checkCollisionWithBullets();
+      //  checkCollisionWithBullets();
 
         move( x + speedX, y + speedY);
         rect.left = x;
@@ -105,10 +105,15 @@ public class EnemySpaceship implements NPC{
 
     public boolean getVisible() { return visible; }
 
-    public void checkCollisionWithUser(){
+    /*public void checkCollisionWithUser(){
         if (this.getRect().intersect(GameEngine.userSpaceship.getRect())){
             Log.d("Collision","Between Enemy and User");
         }
+    }*/
+
+    @Override
+    public void getHit(int amount) {
+        health -= amount;
     }
 
     public void checkCollisionWithBullets(){
