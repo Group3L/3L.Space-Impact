@@ -52,7 +52,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         System.out.println(GameData.getUserSpaceship(context));
         gameEngine = new GameEngine(context, this, GameData.getUserSpaceship(context), gameActivity);
         for(int i = 0; i < bullet.length; i++){
-            bullet[i] = new Bullet(screenY);
+            bullet[i] = new Bullet(screenY, false);
         }
         gameEngine.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.levelback));
         gameActivity.setGameEngine( gameEngine);
