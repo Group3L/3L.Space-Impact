@@ -23,8 +23,10 @@ public class GameOverActivity extends AppCompatActivity {
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                System.out.println("Insıde onClick");
                 Intent intent = new Intent(GameOverActivity.this, MainMenu.class);
                 startActivity( intent);
+                GameOverActivity.this.overridePendingTransition(0, 0);
             }
         });
 

@@ -1,4 +1,4 @@
-package ba.spaceimpact;
+package ba.spaceimpact.GameObject;
 
 import android.graphics.RectF;
 
@@ -9,7 +9,7 @@ public class Bullet {
     private float y;
 
     private RectF rect;
-
+    private boolean userBullet;
     public final int UP = 0;
 
 
@@ -21,12 +21,17 @@ public class Bullet {
 
     private boolean isActive;
 
-    public Bullet(int screenY) {
+    public Bullet(int screenY, boolean userBullet) {
 
+        this.userBullet = userBullet;
         height = screenY / 100;
         isActive = false;
 
         rect = new RectF();
+    }
+
+    public boolean isUserBullet() {
+        return userBullet;
     }
 
     public float getImpactPointY(){

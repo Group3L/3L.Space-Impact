@@ -1,21 +1,16 @@
 package ba.spaceimpact.GameObject;
 
-/**
- * Created by busraarabaci on 02/11/2017.
- */
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.RectF;
+import android.os.Handler;
+import android.util.Log;
 
-
-        import android.content.Context;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
-        import android.graphics.Canvas;
-        import android.graphics.RectF;
-        import android.os.Handler;
-        import android.util.Log;
-
-        import ba.spaceimpact.GameEngine;
-        import ba.spaceimpact.GameView;
-        import ba.spaceimpact.R;
+import ba.spaceimpact.GameEngine;
+import ba.spaceimpact.GameView;
+import ba.spaceimpact.R;
 
 
 public class EnemySpaceship implements NPC{

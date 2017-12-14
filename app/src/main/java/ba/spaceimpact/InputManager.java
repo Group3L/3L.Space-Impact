@@ -1,8 +1,5 @@
 package ba.spaceimpact;
 
-/**
- * Created by busraarabaci on 02/11/2017.
- */
 
 import ba.spaceimpact.GameObject.GameObject;
 import ba.spaceimpact.GameObject.UserSpaceship;

@@ -14,11 +14,14 @@ package ba.spaceimpact.GameObject;
         import android.view.Display;
         import android.view.WindowManager;
 
+        import java.io.Serializable;
+
         import ba.spaceimpact.R;
 
 
-public class UserSpaceship implements GameObject{
+public class UserSpaceship implements Serializable, GameObject{
 
+    private static final long serialVersionUID = 1;
     private float x, y;
     private Bitmap spaceship;
     private Context context;
@@ -27,27 +30,49 @@ public class UserSpaceship implements GameObject{
     private boolean visible=true;
     private RectF rect;
     private int bulletCount;
+    private boolean invincible;
+    private int extraScore;
+    private int score;
 
-    public UserSpaceship(Context context, int health, int damage){
-
+    public UserSpaceship(Context context, int health, int damage, int bulletCount){
+        this.score = 0;
+        this.invincible = false;
         this.health = health;
         this.damage = damage;
         this.context = context;
         spaceship = BitmapFactory.decodeResource( context.getResources(), R.drawable.player);
         height = spaceship.getHeight();
         width = spaceship.getWidth();
-        WindowManager wm = (WindowManager)context.getSystemService(Context.WINDOW_SERVICE);
-        Display display = wm.getDefaultDisplay();
-        x = (width + display.getWidth()) / 2;
-        y = (float)0.6 * display.getHeight() ;
+        x = 0;
+        y = 0;
         rect = new RectF();
-        bulletCount = 200;
-
+        this.bulletCount = bulletCount;
     }
+
+    public void activatePowerUp(PowerUp pow){
+        //TODO
+    }
+
+    public void setExtraScore( int extraAmount ){
+        this.extraScore = extraAmount;
+    }
+
+    public void increaseScore( int score){
+        //if the powerup is on extrascore will be more than 0
+        this.score += score * (1+ extraScore);
+    }
+
+    public void setInvincible(boolean i){ invincible = i;}
+
+    public boolean isInvincible(){return invincible;}
+
+    public int getDamage(){return damage;}
 
     public void getHit( int damage){ health -= damage;}
 
     public int getHealth(){return health;}
+
+    public void setHealth( int health){this.health = health;}
 
     public int getBulletCount(){return bulletCount;}
 
@@ -76,6 +101,10 @@ public class UserSpaceship implements GameObject{
             return true;
         }
         return false;
+    }
+
+    public String toString(){
+        return "Health : " + health + "\nBullet Count : " + bulletCount + "\n";
     }
 
     @Override

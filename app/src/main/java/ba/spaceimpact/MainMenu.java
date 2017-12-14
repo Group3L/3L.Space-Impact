@@ -14,7 +14,6 @@ public class MainMenu extends Activity {
 
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -27,6 +26,7 @@ public class MainMenu extends Activity {
         v.startAnimation(buttonClick);
         Intent intent = new Intent(this, LevelActivity.class);
         startActivity(intent);
+        this.overridePendingTransition(0, 0);
 
     }
 }

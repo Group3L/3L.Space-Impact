@@ -4,6 +4,7 @@ package ba.spaceimpact;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
@@ -25,7 +26,6 @@ public class LevelActivity extends Activity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_level);
-
     }
 
     public void startLevel(View v){
@@ -40,21 +40,25 @@ public class LevelActivity extends Activity {
                 level = "LEVEL 1";
                 intent.putExtra("LEVEL", level);
                 startActivity(intent);
+                this.overridePendingTransition(0, 0);
                 break;
             case R.id.level2_button:
                 level = "LEVEL 2";
                 intent.putExtra("LEVEL", level);
                 startActivity(intent);
+                this.overridePendingTransition(0, 0);
                 break;
             case R.id.level3_button:
                 level = "LEVEL 3";
                 intent.putExtra("LEVEL", level);
                 startActivity(intent);
+                this.overridePendingTransition(0, 0);
                 break;
             case R.id.level4_button:
                 level = "LEVEL 4";
                 intent.putExtra("LEVEL", level);
                 startActivity(intent);
+                this.overridePendingTransition(0, 0);
                 break;
         }
 
@@ -62,5 +66,19 @@ public class LevelActivity extends Activity {
 
     }
 
+    //disable the animation
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)  {
+        if (keyCode == KeyEvent.KEYCODE_BACK && event.getRepeatCount() == 0) {
+
+            Intent intent = new Intent(this, MainMenu.class);
+            startActivity(intent);
+            this.overridePendingTransition(0, 0);
+
+            return true;
+        }
+
+        return super.onKeyDown(keyCode, event);
+    }
 
 }

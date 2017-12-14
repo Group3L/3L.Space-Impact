@@ -1,19 +1,16 @@
 package ba.spaceimpact;
 
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.BitmapFactory;
-        import android.graphics.Point;
-        import android.support.v4.view.MotionEventCompat;
-        import android.util.Log;
+import android.util.Log;
         import android.view.Display;
         import android.view.MotionEvent;
         import android.view.SurfaceHolder;
         import android.view.SurfaceView;
         import android.view.WindowManager;
 
-        import ba.spaceimpact.GameEngine;
-        import ba.spaceimpact.GameObject.UserSpaceship;
+import ba.spaceimpact.GameObject.Bullet;
+import ba.spaceimpact.GameObject.UserSpaceship;
 
 /**
  * Created by pc on 31.10.2017.
@@ -48,11 +45,17 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
     @Override
     public void surfaceCreated(SurfaceHolder surfaceHolder) {
-        gameEngine = new GameEngine(context, this, new UserSpaceship(context, 10, 4), gameActivity);
+        GameData.load(context);
+       // gameEngine = new GameEngine(context, this, new UserSpaceship(context, 10, 4), gameActivity);
+        if(GameData.getUserSpaceship(context) == null) System.out.println("Userspaceship is null");
+        else System.out.println("User spaceship is not null");
+        System.out.println(GameData.getUserSpaceship(context));
+        gameEngine = new GameEngine(context, this, GameData.getUserSpaceship(context), gameActivity);
         for(int i = 0; i < bullet.length; i++){
             bullet[i] = new Bullet(screenY);
         }
         gameEngine.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.levelback));
+        gameActivity.setGameEngine( gameEngine);
         gameEngine.start();
     }
 
@@ -100,7 +103,6 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                         ilo++;
                         gameEngine.getUserSpaceship().shoot();
                         if (ilo == bullet.length) {
-
                             ilo = 0;
                         }
                     }
