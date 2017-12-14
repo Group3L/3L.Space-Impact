@@ -19,6 +19,7 @@ package ba.spaceimpact;
         import android.view.SurfaceView;
         import android.view.WindowManager;
 
+        import ba.spaceimpact.GameObject.Bullet;
         import ba.spaceimpact.GameObject.Collectable;
         import ba.spaceimpact.GameObject.EnemySpaceship;
         import ba.spaceimpact.GameObject.GameObject;
@@ -31,11 +32,15 @@ package ba.spaceimpact;
         import java.util.LinkedList;
         import java.util.Random;
 
+        import static ba.spaceimpact.GameView.screenY;
+
 /**
  * Created by pc on 31.10.2017.
  */
 
 public class GameEngine implements Runnable, Serializable {
+
+    private final int ENEMY_KILL_SCORE = 50;
 
     private boolean playing;
     private Thread gameThread;
@@ -47,12 +52,13 @@ public class GameEngine implements Runnable, Serializable {
     public static UserSpaceship userSpaceship;
     private Bitmap background;
     private int pixelX, pixelY;
-    private int score = 1000;
     private float dockHeight;
     public static final double DOCK_RATIO = 0.2;
     private Rect shootButtonRect;
     private GameActivity gameActivity;
     private ArrayList<Collectable>collectables;
+    private Bullet[] bullet = new Bullet[150];
+    private int ilo = 0;//?
 
     public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity){
         this.context = context;
@@ -72,6 +78,10 @@ public class GameEngine implements Runnable, Serializable {
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
+        for(int i = 0; i < bullet.length; i++){
+            bullet[i] = new Bullet(screenY, true, 1); //TODO 1 will be changed
+        }
+
         System.out.println("X: " + (this.userSpaceship.getWidth() + pixelX) / 2);
         System.out.println("Y: " + (float)0.6 * pixelY);
 
@@ -84,7 +94,16 @@ public class GameEngine implements Runnable, Serializable {
         background = backgroundImage;
     }
 
+    public void shoot( boolean infiniteShoot){
+        if (userSpaceship.isInfiniteShoot() == infiniteShoot && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), bullet[ilo].UP)) {
+            ilo++;
+            userSpaceship.shoot(!userSpaceship.isInfiniteShoot());
+            if (ilo == bullet.length) {
+                ilo = 0;
+            }
+        }
 
+    }
 
 
     private void setEnemies( int enemyCount){
@@ -101,7 +120,7 @@ public class GameEngine implements Runnable, Serializable {
 
             Random random = new Random();
 
-            if(random.nextInt(3) > 0){
+            if(random.nextInt(5) > 0){
                 int speedY = random.nextInt(31) + 10;
 
                 EnemySpaceship e = new EnemySpaceship(1, 2, posX, posY, 0, speedY, context);
@@ -120,12 +139,18 @@ public class GameEngine implements Runnable, Serializable {
                 else{
                     gameObjects.add(e);
                 }
-
             }
             else{
                 int speedY = random.nextInt(31) + 10;
 
-                PowerUp e = new PowerUp(PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY);
+                PowerUp e = null;
+                int powerUpType = random.nextInt(4);
+                switch (powerUpType){
+                    case 0: e = new PowerUp(PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY); break;
+                    case 1: e = new PowerUp(PowerUp.HEALTH_REGEN, userSpaceship, posX, posY, 0, speedY); break;
+                    case 2: e = new PowerUp(PowerUp.EXTRA_POINT, userSpaceship, posX, posY, 0, speedY); break;
+                    case 3: e = new PowerUp(PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
+                }
 
                 //Checking if new spaceship intersects with existing ones
                 if (gameObjects.size() > 0) {
@@ -182,7 +207,7 @@ public class GameEngine implements Runnable, Serializable {
                 canvas.drawBitmap(background, 0, 0, null);
             }
 
-            String scoreStr = "" + score;
+            String scoreStr = "" + userSpaceship.getScore();
             Paint p = new Paint();
             p.setTextSize(48f);
             p.setColor(Color.WHITE);
@@ -196,9 +221,9 @@ public class GameEngine implements Runnable, Serializable {
 
             Paint paint = new Paint();
             paint.setColor(Color.YELLOW);
-            for(int i = 0; i < GameView.bullet.length; i++){
-                if(GameView.bullet[i].getStatus()) {
-                    canvas.drawRect(GameView.bullet[i].getRect(), paint);
+            for(int i = 0; i < bullet.length; i++){
+                if(bullet[i].getStatus()) {
+                    canvas.drawRect(bullet[i].getRect(), paint);
                 }
             }
 
@@ -247,32 +272,38 @@ public class GameEngine implements Runnable, Serializable {
             //if the object gets out of the frame dispose it
             if (!gameObjects.get(i).getVisible()) {
                 gameObjects.remove(i);
+                userSpaceship.increaseScore(ENEMY_KILL_SCORE);
                 i--;
             }
 
         }
 
+        //if the infinite shoot powerup is active, then the spacship will shoot automatically
+        //and it won't use user's bullets
+        shoot(true);
+
         // Update the players bullet
-        for(int i = 0; i < GameView.bullet.length; i++){
-            if(GameView.bullet[i].getStatus()) {
-                GameView.bullet[i].update(60);
+        for(int i = 0; i < bullet.length; i++){
+            if(bullet[i].getStatus()) {
+                bullet[i].update(60);
             }
         }
 
         // Has the player's bullet hit the top of the screen
-        for(int i = 0; i < GameView.bullet.length; i++){
-            if(GameView.bullet[i].getImpactPointY() < 0){
-                GameView.bullet[i].setInactive();
+        for(int i = 0; i < bullet.length; i++){
+            if(bullet[i].getImpactPointY() < 0){
+                bullet[i].setInactive();
             }
         }
 
+        //collision between bullets and spaceships
        for( int j = 0; j < gameObjects.size(); j++){
             if( gameObjects.get(j) instanceof EnemySpaceship){
-                for( int i = 0; i < GameView.bullet.length; i++){
-                    if(GameView.bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(GameView.bullet[i].getRect())){
+                for( int i = 0; i < bullet.length; i++){
+                    if(bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(bullet[i].getRect())){
                         Log.d("Collision","Between Enemy and Bullet");
-                        ((EnemySpaceship) gameObjects.get(j)).getHit(GameView.bullet[i].getDamage());
-                        GameView.bullet[i].setInactive();
+                        ((EnemySpaceship) gameObjects.get(j)).getHit(bullet[i].getDamage());
+                        bullet[i].setInactive();
                     }
                 }
             }
@@ -287,7 +318,6 @@ public class GameEngine implements Runnable, Serializable {
                 else if( gameObjects.get(i) instanceof PowerUp)((PowerUp) gameObjects.get(i)).powerUp(userSpaceship);
                 gameObjects.remove(i);
                 i--;
-                score--;
             }
 
 

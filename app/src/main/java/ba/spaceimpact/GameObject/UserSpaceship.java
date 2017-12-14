@@ -30,7 +30,7 @@ public class UserSpaceship implements Serializable, GameObject{
     private boolean visible=true;
     private RectF rect;
     private int bulletCount;
-    private boolean invincible;
+    private boolean invincible, infiniteShoot;
     private int extraScore;
     private int score;
 
@@ -49,11 +49,15 @@ public class UserSpaceship implements Serializable, GameObject{
         this.bulletCount = bulletCount;
     }
 
-    public void activatePowerUp(PowerUp pow){
-        //TODO
+    public boolean isInfiniteShoot() {
+        return infiniteShoot;
     }
 
-    public void setExtraScore( int extraAmount ){
+    public void setInfiniteShoot(boolean infiniteShoot) {
+        this.infiniteShoot = infiniteShoot;
+    }
+
+    public void setExtraScore(int extraAmount ){
         this.extraScore = extraAmount;
     }
 
@@ -61,6 +65,8 @@ public class UserSpaceship implements Serializable, GameObject{
         //if the powerup is on extrascore will be more than 0
         this.score += score * (1+ extraScore);
     }
+
+    public int getScore(){return score;}
 
     public void setInvincible(boolean i){ invincible = i;}
 
@@ -95,12 +101,9 @@ public class UserSpaceship implements Serializable, GameObject{
         return false;
     }
 
-    public boolean shoot(){
-        if( bulletCount > 0) {
-            bulletCount--;
+    public boolean shoot(boolean useBullet){
+            if(useBullet)bulletCount--;
             return true;
-        }
-        return false;
     }
 
     public String toString(){

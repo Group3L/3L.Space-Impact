@@ -26,7 +26,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     public static int screenX,screenY;
     private GameActivity gameActivity;
     // The player's bullet
-    public static Bullet[] bullet = new Bullet[20];
+    // public static Bullet[] bullet = new Bullet[20];
     private int ilo = 0;
 
     public GameView(Context context, GameActivity gameActivity){
@@ -51,9 +51,9 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         else System.out.println("User spaceship is not null");
         System.out.println(GameData.getUserSpaceship(context));
         gameEngine = new GameEngine(context, this, GameData.getUserSpaceship(context), gameActivity);
-        for(int i = 0; i < bullet.length; i++){
-            bullet[i] = new Bullet(screenY, true, 1); //TODO 1 will be changed
-        }
+        /*for(int i = 0; i < bullet.length; i++){
+            bullet[i] = new Bullet(screenY, true, 1);
+        }*/
         gameEngine.setBackgroundImage(BitmapFactory.decodeResource(getResources(), R.drawable.levelback));
         gameActivity.setGameEngine( gameEngine);
         gameEngine.start();
@@ -99,13 +99,14 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
                  if (event.getX(1) > gameEngine.getShootButtonRect().left && event.getY(1) < gameEngine.getShootButtonRect().top &&
                         event.getX(1) < gameEngine.getShootButtonRect().right && event.getY(1) > gameEngine.getShootButtonRect().bottom) {
 
-                    if (gameEngine.getUserSpaceship().getBulletCount() > 0 && bullet[ilo].shoot(gameEngine.getUserSpaceship().getX() + gameEngine.getUserSpaceship().getWidth() / 2, gameEngine.getUserSpaceship().getY(), bullet[ilo].UP)) {
+                  /*  if (gameEngine.getUserSpaceship().getBulletCount() > 0 && bullet[ilo].shoot(gameEngine.getUserSpaceship().getX() + gameEngine.getUserSpaceship().getWidth() / 2, gameEngine.getUserSpaceship().getY(), bullet[ilo].UP)) {
                         ilo++;
                         gameEngine.getUserSpaceship().shoot();
                         if (ilo == bullet.length) {
                             ilo = 0;
                         }
-                    }
+                    }*/
+                  gameEngine.shoot(false);
                 }
 
                 break;
