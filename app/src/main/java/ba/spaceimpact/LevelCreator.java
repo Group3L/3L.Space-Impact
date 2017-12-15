@@ -32,7 +32,10 @@ public class LevelCreator {
 
             int speedY = random.nextInt(31) + 10;
 
-            EnemySpaceship e = new EnemySpaceship(1, 2, posX, posY, 0, speedY, context);
+            int typeRand = random.nextInt(EnemySpaceship.enemyType.values().length);
+
+                EnemySpaceship e = new EnemySpaceship(5, 2, posX, posY, 0, speedY, context,
+                        EnemySpaceship.enemyType.values()[typeRand]);
 
             //Checking if new spaceship intersects with existing ones
             if (gameObjects.size() > 0) {
