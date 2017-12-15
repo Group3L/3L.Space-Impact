@@ -116,6 +116,7 @@ public class EnemySpaceship implements NPC{
         health -= amount;
     }
 
+    /*
     public void checkCollisionWithBullets(){
         for(int i=0; i<GameView.bullet.length; i++){
             if(GameView.bullet[i].getStatus() && this.getRect().intersect(GameView.bullet[i].getRect())){
@@ -124,6 +125,6 @@ public class EnemySpaceship implements NPC{
                 GameView.bullet[i].setInactive();
             }
         }
-    }
+    }*/
 
 }

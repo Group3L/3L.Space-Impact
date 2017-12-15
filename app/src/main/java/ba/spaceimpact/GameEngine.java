@@ -45,7 +45,7 @@ public class GameEngine implements Runnable, Serializable {
     private boolean playing;
     private Thread gameThread;
     private Canvas canvas;
-    public static LinkedList<GameObject> gameObjects;
+    public static ArrayList<GameObject> gameObjects;
     private Context context;
     private SurfaceView surfaceView;
     private SurfaceHolder surfaceHolder;
@@ -56,7 +56,6 @@ public class GameEngine implements Runnable, Serializable {
     public static final double DOCK_RATIO = 0.2;
     private Rect shootButtonRect;
     private GameActivity gameActivity;
-    private ArrayList<Collectable>collectables;
     private Bullet[] bullet = new Bullet[150];
     private int ilo = 0;//?
 
@@ -65,7 +64,6 @@ public class GameEngine implements Runnable, Serializable {
         this.surfaceView = surfaceView;
         surfaceHolder = surfaceView.getHolder();
 
-        gameObjects = new LinkedList<>();
         this.userSpaceship = userSpaceship;
 
 
@@ -73,8 +71,10 @@ public class GameEngine implements Runnable, Serializable {
         Display display = wm.getDefaultDisplay();
         pixelX = display.getWidth();
         pixelY = display.getHeight();
-        this.setEnemies( 5);
+      //  this.setEnemies( 5);
     //    this.setCollectables();
+
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 35, 5, 1); //TODO level will be changed
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
@@ -204,7 +204,11 @@ public class GameEngine implements Runnable, Serializable {
             canvas = surfaceHolder.lockCanvas();
 
             if(background != null){
-                canvas.drawBitmap(background, 0, 0, null);
+                try{
+                    canvas.drawBitmap(background, 0, 0, null);
+                }catch (NullPointerException e){
+                    e.printStackTrace();
+                }
             }
 
             String scoreStr = "" + userSpaceship.getScore();
@@ -319,8 +323,6 @@ public class GameEngine implements Runnable, Serializable {
                 gameObjects.remove(i);
                 i--;
             }
-
-
         }
         if(!isEnemyLeft()) {
             Random random = new Random();

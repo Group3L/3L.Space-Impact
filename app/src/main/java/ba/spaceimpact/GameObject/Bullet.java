@@ -3,7 +3,7 @@ package ba.spaceimpact.GameObject;
 import android.graphics.RectF;
 
 
-public class Bullet {
+public class Bullet{
 
     private float x;
     private float y;
@@ -14,7 +14,7 @@ public class Bullet {
     private int damage;
 
     int heading = -1;
-    float speed =  550;
+    float speed =  1500;
 
     private int width = 5;
     private int height;
@@ -52,6 +52,9 @@ public class Bullet {
         isActive = false;
     }
 
+    public boolean isActive() {
+        return isActive;
+    }
 
     public boolean shoot(float startX, float startY, int direction) {
         if (!isActive) {
@@ -80,4 +83,6 @@ public class Bullet {
         rect.bottom = y + height;
 
     }
+
+
 }
