@@ -1,38 +1,25 @@
 package ba.spaceimpact;
 
-/**
- * Created by busraarabaci on 02/11/2017.
- */
-        import android.content.Context;
-        import android.content.Intent;
-        import android.graphics.Bitmap;
-        import android.graphics.BitmapFactory;
-        import android.graphics.Canvas;
-        import android.graphics.Color;
-        import android.graphics.Paint;
-        import android.graphics.Rect;
-        import android.graphics.RectF;
-        import android.graphics.drawable.Drawable;
-        import android.util.Log;
-        import android.view.Display;
-        import android.view.SurfaceHolder;
-        import android.view.SurfaceView;
-        import android.view.WindowManager;
-
-        import ba.spaceimpact.GameObject.Bullet;
-        import ba.spaceimpact.GameObject.Collectable;
-        import ba.spaceimpact.GameObject.EnemySpaceship;
-        import ba.spaceimpact.GameObject.GameObject;
-        import ba.spaceimpact.GameObject.PowerUp;
-        import ba.spaceimpact.GameObject.SpaceShip;
-        import ba.spaceimpact.GameObject.UserSpaceship;
-
-        import java.io.Serializable;
-        import java.util.ArrayList;
-        import java.util.LinkedList;
-        import java.util.Random;
-
-        import static ba.spaceimpact.GameView.screenY;
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
+import android.util.Log;
+import android.view.Display;
+import android.view.SurfaceHolder;
+import android.view.SurfaceView;
+import android.view.WindowManager;
+import ba.spaceimpact.GameObject.Bullet;
+import ba.spaceimpact.GameObject.EnemySpaceship;
+import ba.spaceimpact.GameObject.GameObject;
+import ba.spaceimpact.GameObject.PowerUp;
+import ba.spaceimpact.GameObject.UserSpaceship;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Random;
+import static ba.spaceimpact.GameView.screenY;
 
 /**
  * Created by pc on 31.10.2017.
@@ -58,6 +45,7 @@ public class GameEngine implements Runnable, Serializable {
     private GameActivity gameActivity;
     private Bullet[] bullet = new Bullet[150];
     private int ilo = 0;//?
+    int killedEnemyCount;
 
     public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity){
         this.context = context;
@@ -71,10 +59,8 @@ public class GameEngine implements Runnable, Serializable {
         Display display = wm.getDefaultDisplay();
         pixelX = display.getWidth();
         pixelY = display.getHeight();
-      //  this.setEnemies( 5);
-    //    this.setCollectables();
 
-        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 35, 5, 1); //TODO level will be changed
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 85, 5, 1); //TODO level will be changed
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
@@ -103,73 +89,6 @@ public class GameEngine implements Runnable, Serializable {
             }
         }
 
-    }
-
-
-    private void setEnemies( int enemyCount){
-        for( int i = 0; i < enemyCount; i++) {
-            float posX = (float) (Math.random() * (pixelX + 1));
-            //float posY = (float)(-(Math.random() * (pixelY + 1)));
-            //Enemies should appear out of screen and come to view
-            float posY = -700;
-
-            float posX2 = (float) (Math.random() * (pixelX + 1));
-            //float posY = (float)(-(Math.random() * (pixelY + 1)));
-            //Enemies should appear out of screen and come to view
-            float posY2 = -700;
-
-            Random random = new Random();
-
-            if(random.nextInt(5) > 0){
-                int speedY = random.nextInt(31) + 10;
-
-                EnemySpaceship e = new EnemySpaceship(1, 2, posX, posY, 0, speedY, context);
-
-                //Checking if new spaceship intersects with existing ones
-                if (gameObjects.size() > 0) {
-                    boolean cond = true;
-                    for (int j = 0; j < gameObjects.size(); j++) {
-                        if (e.getRect().intersect(gameObjects.get(j).getRect())) {
-                            cond = false;
-                        }
-                    }
-                    if (cond)
-                        gameObjects.add(e);
-                }
-                else{
-                    gameObjects.add(e);
-                }
-            }
-            else{
-                int speedY = random.nextInt(31) + 10;
-
-                PowerUp e = null;
-                int powerUpType = random.nextInt(4);
-                switch (powerUpType){
-                    case 0: e = new PowerUp(PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY); break;
-                    case 1: e = new PowerUp(PowerUp.HEALTH_REGEN, userSpaceship, posX, posY, 0, speedY); break;
-                    case 2: e = new PowerUp(PowerUp.EXTRA_POINT, userSpaceship, posX, posY, 0, speedY); break;
-                    case 3: e = new PowerUp(PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
-                }
-
-                //Checking if new spaceship intersects with existing ones
-                if (gameObjects.size() > 0) {
-                    boolean cond = true;
-                    for (int j = 0; j < gameObjects.size(); j++) {
-                        if (e.getRect().intersect(gameObjects.get(j).getRect())) {
-                            cond = false;
-                        }
-                    }
-                    if (cond)
-                        gameObjects.add(e);
-                }
-                else{
-                    gameObjects.add(e);
-                }
-
-            }
-
-        }
     }
 
     private boolean isEnemyLeft(){
@@ -217,10 +136,6 @@ public class GameEngine implements Runnable, Serializable {
 
                 canvas.drawText(scoreStr,50,50,p);
                 userSpaceship.draw(canvas);
-
-
-
-
 
 
                 for (int i = 0; i < gameObjects.size(); i++){
@@ -281,6 +196,11 @@ public class GameEngine implements Runnable, Serializable {
             gameObjects.get(i).update();
             //if the object gets out of the frame dispose it
             if (!gameObjects.get(i).getVisible()) {
+                System.out.println("Gameobjects: " + gameObjects.size());
+                if( gameObjects.get(i) instanceof EnemySpaceship){
+                    killedEnemyCount++;
+                    userSpaceship.increaseScore(ENEMY_KILL_SCORE);
+                }
                 gameObjects.remove(i);
                 userSpaceship.increaseScore(ENEMY_KILL_SCORE);
                 i--;
@@ -312,6 +232,7 @@ public class GameEngine implements Runnable, Serializable {
                 for( int i = 0; i < bullet.length; i++){
                     if(bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(bullet[i].getRect())){
                         Log.d("Collision","Between Enemy and Bullet");
+                        userSpaceship.increaseScore(ENEMY_KILL_SCORE);
                         ((EnemySpaceship) gameObjects.get(j)).getHit(bullet[i].getDamage());
                         bullet[i].setInactive();
                     }
@@ -319,10 +240,8 @@ public class GameEngine implements Runnable, Serializable {
             }
         }
 
-
         //collision detection
         for (int i = 0; i < gameObjects.size(); i++) {
-
             if(isEnemyLeft() && userSpaceship.getRect().intersect(gameObjects.get(i).getRect())){
                 if(gameObjects.get(i) instanceof EnemySpaceship && !userSpaceship.isInvincible()) userSpaceship.getHit(1); // if shield powerup is not on//constant value for now
                 else if( gameObjects.get(i) instanceof PowerUp)((PowerUp) gameObjects.get(i)).powerUp(userSpaceship);
@@ -332,12 +251,12 @@ public class GameEngine implements Runnable, Serializable {
         }
         if(!isEnemyLeft()) {
             Random random = new Random();
-            int enemyNum = random.nextInt(10) + 1;
-            setEnemies(enemyNum);
-        }
+            pause();
+            gameActivity.gameOver(true, userSpaceship.getScore(), killedEnemyCount);
+       }
 
         if( userSpaceship.getHealth() <= 0){
-            gameActivity.gameOver();
+            gameActivity.gameOver(false, userSpaceship.getScore(), killedEnemyCount);
             System.out.println("After gameover");
             pause();
         }

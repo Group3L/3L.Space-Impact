@@ -37,7 +37,11 @@ public class EnemySpaceship implements NPC{
         this.speedX = speedX;
         this.speedY = speedY;
         this.context = context;
-        spaceship = BitmapFactory.decodeResource(context.getResources(), R.drawable.enemy);
+        /*
+        * Bitmap b = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)
+            profileImage.setImageBitmap(Bitmap.createScaledBitmap(b, 120, 120, false));
+        * */
+        spaceship = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_1enemy);
         rect = new RectF();
 
         width = spaceship.getWidth();
@@ -96,6 +100,8 @@ public class EnemySpaceship implements NPC{
         if(health<=0)
             visible=false;
     }
+
+    public int getHealth(){return health;}
 
     //@Override
     public float getX() {

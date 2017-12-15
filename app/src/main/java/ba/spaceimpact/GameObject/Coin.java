@@ -8,6 +8,13 @@ import android.graphics.RectF;
  */
 
 public class Coin implements Collectable {
+
+    int amount;
+
+    public Coin( int amount){
+        this.amount = amount;
+    }
+
     @Override
     public void draw(Canvas c) {
 

@@ -24,12 +24,11 @@ public class LevelCreator {
             float posX = (float) (Math.random() * (pixelX + 1));
             //float posY = (float)(-(Math.random() * (pixelY + 1)));
             //Enemies should appear out of screen and come to view
-            float posY = -700;
+
+            float posY = -random.nextInt(10000) - 3000;
 
             float posX2 = (float) (Math.random() * (pixelX + 1));
-            //float posY = (float)(-(Math.random() * (pixelY + 1)));
             //Enemies should appear out of screen and come to view
-            float posY2 = -700;
 
             int speedY = random.nextInt(31) + 10;
 
@@ -49,12 +48,13 @@ public class LevelCreator {
             else{
                 gameObjects.add(e);
             }
+            System.out.println("i = " + i + "\nObject: " + gameObjects.size());
         }
 
         for(int i = 0; i < powerupCount; i++){
             int speedY = random.nextInt(31) + 10;
             float posX = (float) (Math.random() * (pixelX + 1));
-            float posY = -700;
+            float posY = -random.nextInt(10000) - 1000;
             float posX2 = (float) (Math.random() * (pixelX + 1));
             float posY2 = -700;
 
