@@ -25,11 +25,13 @@ public class EnemySpaceship implements NPC{
     private RectF rect;
     private int width;
     private int height;
+    private EnemyBehaviour enemyStrategy;
+    public enum enemyType {EASY, MEDIUM, HARD;}
 
 
     public EnemySpaceship(int health, int damage, float startingX,
                           float startingY, final float speedX, float speedY,
-                          Context context){
+                          Context context, enemyType type){
         this.health = health;
         this.damage = damage;
         x = startingX;
@@ -51,6 +53,15 @@ public class EnemySpaceship implements NPC{
         rect.top = y;
         rect.right = x + width;
         rect.bottom = y + height;
+        
+        if(type == enemyType.EASY)
+            enemyStrategy = new EasyBehaviour();
+        else if(type == enemyType.MEDIUM)
+            enemyStrategy = new MediumBehaviour();
+        else if(type == enemyType.HARD)
+            enemyStrategy = new HardBehaviour();
+        else
+            enemyStrategy = new MediumBehaviour();
     }
 
     @Override
@@ -84,8 +95,10 @@ public class EnemySpaceship implements NPC{
     public void update() {
 
       //  checkCollisionWithBullets();
-
-        move( x + speedX, y + speedY);
+        float[] positions = enemyStrategy.move(x,y,speedY);
+        //move( x + speedX, y + speedY);
+        this.x = positions[0];
+        this.y = positions[1];
         rect.left = x;
         rect.top = y;
         rect.right = x + width;
