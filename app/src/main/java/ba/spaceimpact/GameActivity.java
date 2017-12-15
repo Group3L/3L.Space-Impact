@@ -35,6 +35,14 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         this.overridePendingTransition(0, 0);
     }
 
+    public void pauseGame(){
+        Log.d("Pause Game", "Game Paused");
+        Intent intent = new Intent(this, PauseActivity.class);
+        startActivity(intent);
+        this.overridePendingTransition(0, 0);
+
+    }
+
     //disable the animation
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)  {

@@ -68,8 +68,12 @@ public class EnemySpaceship implements NPC{
 
     //@Override
     public void draw(Canvas c) {
-        if(visible)
-            c.drawBitmap(spaceship, x, y, null);
+        if(visible){
+            try{
+                c.drawBitmap(spaceship, x, y, null);
+            }catch (Exception e){}
+        }
+
     }
 
     //@Override

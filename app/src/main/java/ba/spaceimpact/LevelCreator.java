@@ -59,12 +59,13 @@ public class LevelCreator {
             float posY2 = -700;
 
             PowerUp e = null;
-            int powerUpType = random.nextInt(4);
+            int powerUpType = random.nextInt(5);
             switch (powerUpType){
                 case 0: e = new PowerUp(PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY); break;
                 case 1: e = new PowerUp(PowerUp.HEALTH_REGEN, userSpaceship, posX, posY, 0, speedY); break;
                 case 2: e = new PowerUp(PowerUp.EXTRA_POINT, userSpaceship, posX, posY, 0, speedY); break;
                 case 3: e = new PowerUp(PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
+                case 4: e = new PowerUp(PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
             }
 
             //Checking if new spaceship intersects with existing ones

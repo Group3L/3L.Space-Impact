@@ -53,6 +53,10 @@ public class UserSpaceship implements Serializable, GameObject{
         return infiniteShoot;
     }
 
+    public void setBulletCount( int bulletCount){
+        this.bulletCount = bulletCount;
+    }
+
     public void setInfiniteShoot(boolean infiniteShoot) {
         this.infiniteShoot = infiniteShoot;
     }

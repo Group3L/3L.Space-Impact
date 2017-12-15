@@ -16,6 +16,7 @@ public class PowerUp implements Collectable {
     public static final int HEALTH_REGEN = 2;
     public static final int INF_BULLET= 3;
     public static final int EXTRA_POINT = 4;
+    public static final int EXTRA_BULLET = 5;
 
     private int powerupType;
     private float x, y, speedX, speedY, width, height;
@@ -46,7 +47,9 @@ public class PowerUp implements Collectable {
             case EXTRA_POINT:
                 paint.setColor( Color.CYAN);
                 break;
-
+            case EXTRA_BULLET:
+                paint.setColor(Color.rgb(30, 123, 32));
+                break;
         }
 
 
@@ -94,7 +97,9 @@ public class PowerUp implements Collectable {
                     }
                 }, 5000);
                 break;
-
+            case EXTRA_BULLET:
+                userSpaceship.setBulletCount( userSpaceship.getBulletCount() + r.nextInt(20) + 10);
+                break;
 
         }
         visibility = false;

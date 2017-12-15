@@ -1,6 +1,7 @@
 package ba.spaceimpact;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.BitmapFactory;
 import android.util.Log;
         import android.view.Display;
@@ -86,13 +87,12 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
 
                 break;
             case MotionEvent.ACTION_MOVE:  // a pointer was moved
-                Log.d("Motion Event", "Moved");
                 if( isUserSpaceshipMovable && gameEngine.isPlaying() && event.getY(0) <= screenY - gameEngine.getDockHeight()  ){
                     float X = event.getX(0);
                     float Y = event.getY(0);
                     gameEngine.getUserSpaceship().move( X - (gameEngine.getUserSpaceship().getWidth()/2),
                             Y - (gameEngine.getUserSpaceship().getWidth() /2));
-                }
+                }else if(!gameEngine.isPlaying())gameEngine.resume();
 
                 break;
             case MotionEvent.ACTION_POINTER_DOWN: {
@@ -114,6 +114,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
             case MotionEvent.ACTION_UP:
                 Log.d("Motion Event", "Released");
                 isUserSpaceshipMovable = false;
+
+                gameEngine.pause();
+
+                if(gameEngine.isPlaying())
+                    gameActivity.pauseGame();
                 break;
             case MotionEvent.ACTION_POINTER_UP:
                 break;

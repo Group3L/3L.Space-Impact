@@ -44,7 +44,9 @@
             android:theme="@android:style/Theme.Translucent"
             />
         <activity android:name=".StoreActivity" />
-        <activity android:name=".PauseActivity"></activity>
+        <activity android:name=".PauseActivity">
+            android:theme="@android:style/Theme.Translucent"
+        </activity>
 
     </application>
 

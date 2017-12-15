@@ -95,7 +95,7 @@ public class GameEngine implements Runnable, Serializable {
     }
 
     public void shoot( boolean infiniteShoot){
-        if (userSpaceship.isInfiniteShoot() == infiniteShoot && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), bullet[ilo].UP)) {
+        if (userSpaceship.isInfiniteShoot() == infiniteShoot && userSpaceship.getBulletCount() > 0 && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), bullet[ilo].UP)) {
             ilo++;
             userSpaceship.shoot(!userSpaceship.isInfiniteShoot());
             if (ilo == bullet.length) {
@@ -190,7 +190,6 @@ public class GameEngine implements Runnable, Serializable {
             //to update the frame
             update();
 
-            System.out.println("Insıde run");
 
             //to draw the frame
             draw();
@@ -202,41 +201,46 @@ public class GameEngine implements Runnable, Serializable {
 
 
     public void draw(){
-        if(surfaceHolder.getSurface().isValid()){
-            canvas = surfaceHolder.lockCanvas();
+        try{
+            if(surfaceHolder.getSurface().isValid()){
+                canvas = surfaceHolder.lockCanvas();
 
-            if(background != null){
-                try{
-                    canvas.drawBitmap(background, 0, 0, null);
-                }catch (NullPointerException e){
-                    e.printStackTrace();
+                if(background != null){
+                        canvas.drawBitmap(background, 0, 0, null);
                 }
-            }
 
-            String scoreStr = "" + userSpaceship.getScore();
-            Paint p = new Paint();
-            p.setTextSize(48f);
-            p.setColor(Color.WHITE);
-            canvas.drawText(scoreStr,50,50,p);
+                String scoreStr = "" + userSpaceship.getScore();
+                Paint p = new Paint();
+                p.setTextSize(48f);
+                p.setColor(Color.WHITE);
 
-            userSpaceship.draw(canvas);
 
-            for (int i = 0; i < gameObjects.size(); i++){
-                gameObjects.get(i).draw(canvas);
-            }
+                canvas.drawText(scoreStr,50,50,p);
+                userSpaceship.draw(canvas);
 
-            Paint paint = new Paint();
-            paint.setColor(Color.YELLOW);
-            for(int i = 0; i < bullet.length; i++){
-                if(bullet[i].getStatus()) {
-                    canvas.drawRect(bullet[i].getRect(), paint);
+
+
+
+
+
+                for (int i = 0; i < gameObjects.size(); i++){
+                    gameObjects.get(i).draw(canvas);
                 }
+
+
+                Paint paint = new Paint();
+                paint.setColor(Color.YELLOW);
+                for(int i = 0; i < bullet.length; i++){
+                    if(bullet[i].getStatus()) {
+                        canvas.drawRect(bullet[i].getRect(), paint);
+                    }
+                }
+
+                drawBottomDock( canvas);
+
+                surfaceHolder.unlockCanvasAndPost(canvas);
             }
-
-            drawBottomDock( canvas);
-
-            surfaceHolder.unlockCanvasAndPost(canvas);
-        }
+        }catch (Exception e){}
     }
 
     private void drawBottomDock( Canvas canvas){
@@ -368,6 +372,7 @@ public class GameEngine implements Runnable, Serializable {
 
     public void pause() {
         //when the game is paused
+        draw();
         playing = false;
 
     }
