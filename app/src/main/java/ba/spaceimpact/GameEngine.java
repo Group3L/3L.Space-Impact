@@ -185,13 +185,15 @@ public class GameEngine implements Runnable, Serializable {
     @Override
     public void run() {
         while (playing) {
-            //to draw the frame
-            draw();
+
 
             //to update the frame
             update();
 
             System.out.println("Insıde run");
+
+            //to draw the frame
+            draw();
 
             //to control
             control();
