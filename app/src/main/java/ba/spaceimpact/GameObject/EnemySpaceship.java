@@ -8,8 +8,12 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.util.Log;
 
+import ba.spaceimpact.EasyBehaviour;
+import ba.spaceimpact.EnemyBehaviour;
 import ba.spaceimpact.GameEngine;
 import ba.spaceimpact.GameView;
+import ba.spaceimpact.HardBehaviour;
+import ba.spaceimpact.MediumBehaviour;
 import ba.spaceimpact.R;
 
 
