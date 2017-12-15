@@ -162,6 +162,8 @@ public class GameEngine implements Runnable, Serializable {
         canvas.drawRect( 0, (int)(pixelY - dockHeight), (int)(pixelX), (int)pixelY,
                          new Paint( Color.BLACK));
 
+
+
         //canvas.drawRect( (int)(pixelX * 0.5) , (int)(pixelY - (dockHeight * 0.9)), 0, 0,
         //                 new Paint(Color.RED));
         Paint shootButton = new Paint();
@@ -177,7 +179,7 @@ public class GameEngine implements Runnable, Serializable {
         textColor.setColor(Color.WHITE);
         textColor.setTextSize(80);
 
-        canvas.drawText("Health: " + userSpaceship.getHealth(), 10, pixelY - dockHeight + 50, textColor);
+        canvas.drawText("Health: " + userSpaceship.getHealth(), 10, pixelY - dockHeight + 70, textColor);
         canvas.drawText("Ammo: " + userSpaceship.getBulletCount(), 10, pixelY - 10, textColor);
 
     }

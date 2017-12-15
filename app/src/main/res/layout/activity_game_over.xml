@@ -5,54 +5,70 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="ba.spaceimpact.GameOverActivity"
-    android:background="#80000000">
+    android:background="#40000000">
 
 
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="100dp"
-        android:src="@drawable/spaceimtext"
-        android:text="GAME OVER"
-        android:textSize="60dp"
-        android:textColor="@color/colorPrimary"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
+    <ImageView
+        android:id="@+id/result"
+        android:layout_width="301dp"
+        android:layout_height="186dp"
+        android:layout_marginTop="80dp"
+        android:background="@null"
+        android:src="@drawable/you_win_img"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
+
+    <ImageButton
         android:id="@+id/menuButton"
-        style="@style/Widget.AppCompat.Button.Colored"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="148dp"
-        android:layout_marginTop="22dp"
-        android:background="@android:color/holo_blue_dark"
-        android:text="Main Menu"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/killCountText" />
+        android:layout_width="150dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginStart="8dp"
+        android:background="@null"
+        android:src="@drawable/main_menu_go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/nextButton"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageButton
+        android:id="@+id/nextButton"
+        android:layout_width="150dp"
+        android:layout_height="64dp"
+        android:layout_marginBottom="100dp"
+        android:layout_marginEnd="16dp"
+        android:background="@null"
+        android:src="@drawable/next_level_go"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toEndOf="@+id/menuButton" />
 
     <TextView
         android:id="@+id/scoreText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="24dp"
         android:text="TextView"
-        android:textSize="20dp"
         android:textColor="@color/colorPrimary"
+        android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView" />
+        app:layout_constraintTop_toBottomOf="@+id/result" />
 
     <TextView
         android:id="@+id/killCountText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textColor="@color/colorPrimary"
-        android:layout_marginStart="108dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginStart="116dp"
+        android:layout_marginTop="20dp"
         android:text="TextView"
+        android:textColor="@color/colorPrimary"
         android:textSize="20dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/scoreText" />

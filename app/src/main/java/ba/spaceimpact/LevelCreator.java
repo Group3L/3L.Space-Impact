@@ -30,7 +30,7 @@ public class LevelCreator {
             float posX2 = (float) (Math.random() * (pixelX + 1));
             //Enemies should appear out of screen and come to view
 
-            int speedY = random.nextInt(31) + 10;
+            int speedY = random.nextInt(21) + 30;
 
             EnemySpaceship e = new EnemySpaceship(1, 2, posX, posY, 0, speedY, context);
 

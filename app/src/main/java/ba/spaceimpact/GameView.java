@@ -66,6 +66,8 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     }
 
 
+    public void setGameActivity(GameActivity gameActivity){this.gameActivity = gameActivity;}
+
     @Override
     public void surfaceDestroyed(SurfaceHolder surfaceHolder) {
         gameEngine.pause();
