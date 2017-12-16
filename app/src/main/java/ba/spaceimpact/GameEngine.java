@@ -48,7 +48,7 @@ public class GameEngine implements Runnable, Serializable {
     private int ilo = 0;//?
     int killedEnemyCount;
 
-    public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity){
+    public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity, int level){
         this.context = context;
         this.surfaceView = surfaceView;
         surfaceHolder = surfaceView.getHolder();
@@ -61,7 +61,7 @@ public class GameEngine implements Runnable, Serializable {
         pixelX = display.getWidth();
         pixelY = display.getHeight();
 
-        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 50, 5,  10, 1); //TODO level will be changed
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, level);
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 

@@ -19,7 +19,6 @@ import java.util.ArrayList;
 public class LevelActivity extends Activity {
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -39,24 +38,28 @@ public class LevelActivity extends Activity {
             case R.id.level1_button:
                 level = "LEVEL 1";
                 intent.putExtra("LEVEL", level);
+                intent.putExtra("LEVELNO", 1);
                 startActivity(intent);
                 this.overridePendingTransition(0, 0);
                 break;
             case R.id.level2_button:
                 level = "LEVEL 2";
                 intent.putExtra("LEVEL", level);
+                intent.putExtra("LEVELNO", 2);
                 startActivity(intent);
                 this.overridePendingTransition(0, 0);
                 break;
             case R.id.level3_button:
                 level = "LEVEL 3";
                 intent.putExtra("LEVEL", level);
+                intent.putExtra("LEVELNO", 3);
                 startActivity(intent);
                 this.overridePendingTransition(0, 0);
                 break;
             case R.id.level4_button:
                 level = "LEVEL 4";
                 intent.putExtra("LEVEL", level);
+                intent.putExtra("LEVELNO", 4);
                 startActivity(intent);
                 this.overridePendingTransition(0, 0);
                 break;

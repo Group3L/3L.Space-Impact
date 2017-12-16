@@ -4,10 +4,6 @@ import android.util.Log;
 
 import ba.spaceimpact.GameObject.UserSpaceship;
 
-/**
- * Created by busraarabaci on 15.12.2017.
- */
-
 public class HardBehaviour implements EnemyBehaviour{
     @Override
     public float[] move(float x, float y, float speed) {
