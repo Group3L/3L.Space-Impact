@@ -61,7 +61,7 @@ public class GameEngine implements Runnable, Serializable {
         pixelX = display.getWidth();
         pixelY = display.getHeight();
 
-        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 50, 5,  10, 1); //TODO level will be changed
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY,1);
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
