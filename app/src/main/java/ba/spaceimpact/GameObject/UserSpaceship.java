@@ -33,6 +33,7 @@ public class UserSpaceship implements Serializable, GameObject{
     private boolean invincible, infiniteShoot;
     private int extraScore;
     private int score;
+    private int coin;
 
     public UserSpaceship(Context context, int health, int damage, int bulletCount){
         this.score = 0;
@@ -40,6 +41,7 @@ public class UserSpaceship implements Serializable, GameObject{
         this.health = health;
         this.damage = damage;
         this.context = context;
+        this.coin = 0;
         spaceship = BitmapFactory.decodeResource( context.getResources(), R.drawable.player);
         height = spaceship.getHeight();
         width = spaceship.getWidth();
@@ -47,6 +49,14 @@ public class UserSpaceship implements Serializable, GameObject{
         y = 0;
         rect = new RectF();
         this.bulletCount = bulletCount;
+    }
+
+    public int getCoin() {
+        return coin;
+    }
+
+    public void setCoin(int coin) {
+        this.coin = coin;
     }
 
     public boolean isInfiniteShoot() {

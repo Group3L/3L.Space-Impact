@@ -12,6 +12,7 @@ import android.view.SurfaceHolder;
 import android.view.SurfaceView;
 import android.view.WindowManager;
 import ba.spaceimpact.GameObject.Bullet;
+import ba.spaceimpact.GameObject.Coin;
 import ba.spaceimpact.GameObject.EnemySpaceship;
 import ba.spaceimpact.GameObject.GameObject;
 import ba.spaceimpact.GameObject.PowerUp;
@@ -60,7 +61,7 @@ public class GameEngine implements Runnable, Serializable {
         pixelX = display.getWidth();
         pixelY = display.getHeight();
 
-        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 85, 5, 1); //TODO level will be changed
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 50, 5,  10, 1); //TODO level will be changed
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
@@ -128,7 +129,7 @@ public class GameEngine implements Runnable, Serializable {
                         canvas.drawBitmap(background, 0, 0, null);
                 }
 
-                String scoreStr = "" + userSpaceship.getScore();
+                String scoreStr = "Score: " + userSpaceship.getScore() + "\nCoin : " + userSpaceship.getCoin();
                 Paint p = new Paint();
                 p.setTextSize(48f);
                 p.setColor(Color.WHITE);
@@ -234,7 +235,6 @@ public class GameEngine implements Runnable, Serializable {
                 for( int i = 0; i < bullet.length; i++){
                     if(bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(bullet[i].getRect())){
                         Log.d("Collision","Between Enemy and Bullet");
-                        userSpaceship.increaseScore(ENEMY_KILL_SCORE);
                         ((EnemySpaceship) gameObjects.get(j)).getHit(bullet[i].getDamage());
                         bullet[i].setInactive();
                     }
@@ -247,6 +247,7 @@ public class GameEngine implements Runnable, Serializable {
             if(isEnemyLeft() && userSpaceship.getRect().intersect(gameObjects.get(i).getRect())){
                 if(gameObjects.get(i) instanceof EnemySpaceship && !userSpaceship.isInvincible()) userSpaceship.getHit(1); // if shield powerup is not on//constant value for now
                 else if( gameObjects.get(i) instanceof PowerUp)((PowerUp) gameObjects.get(i)).powerUp(userSpaceship);
+                else if( gameObjects.get(i) instanceof Coin)((Coin) gameObjects.get(i)).activateCoin();
                 gameObjects.remove(i);
                 i--;
             }
@@ -254,11 +255,11 @@ public class GameEngine implements Runnable, Serializable {
         if(!isEnemyLeft()) {
             Random random = new Random();
             pause();
-            gameActivity.gameOver(true, userSpaceship.getScore(), killedEnemyCount);
+            gameActivity.gameOver(true, userSpaceship.getScore(), killedEnemyCount, userSpaceship.getCoin());
        }
 
         if( userSpaceship.getHealth() <= 0){
-            gameActivity.gameOver(false, userSpaceship.getScore(), killedEnemyCount);
+            gameActivity.gameOver(false, userSpaceship.getScore(), killedEnemyCount, userSpaceship.getCoin());
             System.out.println("After gameover");
             pause();
         }
@@ -293,7 +294,6 @@ public class GameEngine implements Runnable, Serializable {
 
     public void pause() {
         //when the game is paused
-        draw();
         playing = false;
 
     }

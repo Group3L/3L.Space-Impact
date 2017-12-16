@@ -20,7 +20,9 @@ public class GameDataObject implements Serializable {
     }
 
     public UserSpaceship getUserSpaceship(Context context) {
-        return new UserSpaceship(context, health, damage, bulletCount);
+        UserSpaceship userSpaceship = new UserSpaceship(context, health, damage, bulletCount);
+        userSpaceship.setCoin( coin );
+        return userSpaceship;
     }
 
     public int getHealth() {

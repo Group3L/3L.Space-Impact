@@ -32,12 +32,13 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         this.gameEngine = ge;
     }
 
-    public void gameOver( boolean win, int score, int killedEnemyCount){
+    public void gameOver( boolean win, int score, int killedEnemyCount, int coin){
         Log.d("GameOver", "game over");
         Intent intent = new Intent(this, GameOverActivity.class);
         intent.putExtra("Result", win);
         intent.putExtra("Score", score);
         intent.putExtra("Killed enemy", killedEnemyCount);
+        intent.putExtra("Coin", coin);
         startActivity(intent);
         this.overridePendingTransition(0, 0);
     }

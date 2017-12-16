@@ -5,6 +5,7 @@ import android.content.Context;
 import java.util.ArrayList;
 import java.util.Random;
 
+import ba.spaceimpact.GameObject.Coin;
 import ba.spaceimpact.GameObject.EnemySpaceship;
 import ba.spaceimpact.GameObject.GameObject;
 import ba.spaceimpact.GameObject.PowerUp;
@@ -16,7 +17,7 @@ import ba.spaceimpact.GameObject.UserSpaceship;
 
 public class LevelCreator {
 
-    public static ArrayList<GameObject> setGameObjects(Context context, UserSpaceship userSpaceship, int pixelX, int pixelY, int enemyCount, int powerupCount, int level){
+    public static ArrayList<GameObject> setGameObjects(Context context, UserSpaceship userSpaceship, int pixelX, int pixelY, int enemyCount, int powerupCount, int coinNumber, int level){
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         Random random = new Random();
 
@@ -38,20 +39,7 @@ public class LevelCreator {
                         EnemySpaceship.enemyType.values()[typeRand]);
 
             //Checking if new spaceship intersects with existing ones
-            if (gameObjects.size() > 0) {
-                boolean cond = true;
-                for (int j = 0; j < gameObjects.size(); j++) {
-                    if (e.getRect().intersect(gameObjects.get(j).getRect())) {
-                        cond = false;
-                    }
-                }
-                if (cond)
-                    gameObjects.add(e);
-            }
-            else{
-                gameObjects.add(e);
-            }
-            System.out.println("i = " + i + "\nObject: " + gameObjects.size());
+            gameObjects = positionCheck(e, gameObjects);
         }
 
         for(int i = 0; i < powerupCount; i++){
@@ -71,24 +59,44 @@ public class LevelCreator {
                 case 4: e = new PowerUp(PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
             }
 
-            //Checking if new spaceship intersects with existing ones
-            if (gameObjects.size() > 0) {
-                boolean cond = true;
-                for (int j = 0; j < gameObjects.size(); j++) {
-                    if (e.getRect().intersect(gameObjects.get(j).getRect())) {
-                        cond = false;
-                    }
-                }
-                if (cond)
-                    gameObjects.add(e);
-            }
-            else{
-                gameObjects.add(e);
-            }
+            gameObjects = positionCheck(e, gameObjects);
 
+        }
+
+        for(int i = 0; i < coinNumber; i++){
+            int speedY = random.nextInt(31) + 10;
+            float posX = (float) (Math.random() * (pixelX + 1));
+            float posY = -random.nextInt(10000) - 1000;
+            float posX2 = (float) (Math.random() * (pixelX + 1));
+            float posY2 = -700;
+
+            Coin coin = new Coin( random.nextInt(6) + 5, userSpaceship, 0, speedY);
+
+            //Checking if new object intersects with existing ones
+            gameObjects = positionCheck(coin, gameObjects);
         }
 
         return gameObjects;
     }
+
+    private static ArrayList<GameObject> positionCheck(GameObject gameObject, ArrayList<GameObject> gameObjects){
+        if (gameObjects.size() > 0) {
+            boolean cond = true;
+            for (int j = 0; j < gameObjects.size(); j++) {
+                if (gameObject.getRect().intersect(gameObjects.get(j).getRect())) {
+                    cond = false;
+                }
+            }
+            if (cond)
+                gameObjects.add(gameObject);
+        }
+        else{
+            gameObjects.add(gameObject);
+        }
+
+        return gameObjects;
+    }
+
+
 
 }

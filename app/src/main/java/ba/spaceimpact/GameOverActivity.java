@@ -16,7 +16,7 @@ public class GameOverActivity extends Activity {
 
     ImageButton menuButton, nextButton;
     ImageView result;
-    TextView score, killCount;
+    TextView score, killCount, coinText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -28,6 +28,7 @@ public class GameOverActivity extends Activity {
         boolean win = getIntent().getBooleanExtra("Result", true);
         int s = getIntent().getIntExtra("Score", 0);
         int k = getIntent().getIntExtra("Killed enemy", 0);
+        final int c = getIntent().getIntExtra("Coin", 0);
 
         result = findViewById(R.id.result);
         if( !win )result.setImageResource(R.drawable.you_lose_img);
@@ -39,10 +40,15 @@ public class GameOverActivity extends Activity {
         killCount = findViewById(R.id.killCountText);
         killCount.setText("Killed enemy : " + k);
 
+        coinText = findViewById(R.id.coinText);
+        coinText.setText("Coin : " + c);
+
         menuButton = findViewById(R.id.menuButton);
         menuButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                GameData.setCoin(c);
+                GameData.save(GameOverActivity.this);
                 Intent intent = new Intent(GameOverActivity.this, MainMenu.class);
                 startActivity( intent);
                 GameOverActivity.this.overridePendingTransition(0, 0);
@@ -53,6 +59,9 @@ public class GameOverActivity extends Activity {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                GameData.setCoin(c);
+                GameData.save(GameOverActivity.this);
                 Intent intent = new Intent(GameOverActivity.this, GameActivity.class);
                 startActivity( intent);
                 GameOverActivity.this.overridePendingTransition(0, 0);

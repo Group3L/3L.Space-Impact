@@ -139,6 +139,6 @@ public class PowerUp implements Collectable {
 
     @Override
     public RectF getRect() {
-        return new RectF(x, y, x+30, y+30);
+        return new RectF(x, y, x+width, y+height);
     }
 }
