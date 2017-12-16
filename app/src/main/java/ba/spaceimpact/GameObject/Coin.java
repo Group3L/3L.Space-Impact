@@ -1,10 +1,15 @@
 package ba.spaceimpact.GameObject;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.RectF;
+
+import ba.spaceimpact.R;
 
 /**
  * Created by pc on 14.12.2017.
@@ -17,18 +22,19 @@ public class Coin implements Collectable {
     float x, y, speedY, speedX;
     int width, height;
     RectF rectF;
-    Paint paint;
     boolean visibility;
+    private Bitmap coin;
 
-    public Coin( int amount, UserSpaceship userSpaceship, float x, float y,  float speedx, float speedY){
+
+    public Coin(Context context, int amount, UserSpaceship userSpaceship, float x, float y, float speedx, float speedY){
         this.amount = amount;
         this.userSpaceship = userSpaceship;
-        paint = new Paint();
-        paint.setColor(Color.YELLOW);
         this.x = x;
         this.y = y;
-        width = 100;
-        height = 100;
+        coin = BitmapFactory.decodeResource(context.getResources(), R.drawable.coin);
+
+        width = coin.getWidth();
+        height = coin.getHeight();
         this.speedX = speedx;
         this.speedY = speedY;
         visibility = true;
@@ -36,7 +42,8 @@ public class Coin implements Collectable {
 
     @Override
     public void draw(Canvas c) {
-        c.drawRect(x, y, x + width, y + height, paint);
+        c.drawBitmap(coin, x, y, null);
+
     }
 
     @Override

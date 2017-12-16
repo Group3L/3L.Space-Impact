@@ -67,11 +67,11 @@ public class LevelCreator {
             PowerUp e = null;
             int powerUpType = random.nextInt(5);
             switch (powerUpType){
-                case 0: e = new PowerUp(PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY); break;
-                case 1: e = new PowerUp(PowerUp.HEALTH_REGEN, userSpaceship, posX, posY, 0, speedY); break;
-                case 2: e = new PowerUp(PowerUp.EXTRA_POINT, userSpaceship, posX, posY, 0, speedY); break;
-                case 3: e = new PowerUp(PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
-                case 4: e = new PowerUp(PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
+                case 0: e = new PowerUp(context, PowerUp.SHIELD, userSpaceship, posX, posY, 0, speedY); break;
+                case 1: e = new PowerUp(context, PowerUp.HEALTH_REGEN, userSpaceship, posX, posY, 0, speedY); break;
+                case 2: e = new PowerUp(context, PowerUp.EXTRA_POINT, userSpaceship, posX, posY, 0, speedY); break;
+                case 3: e = new PowerUp(context, PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
+                case 4: e = new PowerUp(context, PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
             }
 
             gameObjects = positionCheck(e, gameObjects);
@@ -85,7 +85,7 @@ public class LevelCreator {
             posX2 = (float) (Math.random() * (pixelX + 1));
             posY2 = -700;
 
-            Coin coin = new Coin( random.nextInt(6) + 5, userSpaceship, posX, posY, 0, speedY);
+            Coin coin = new Coin( context,random.nextInt(6) + 5, userSpaceship, posX, posY, 0, speedY);
 
             //Checking if new object intersects with existing ones
             gameObjects = positionCheck(coin, gameObjects);

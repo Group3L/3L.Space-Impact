@@ -1,5 +1,8 @@
 package ba.spaceimpact.GameObject;
 
+import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
@@ -8,6 +11,8 @@ import android.os.Handler;
 import android.os.Looper;
 
 import java.util.Random;
+
+import ba.spaceimpact.R;
 
 
 public class PowerUp implements Collectable {
@@ -23,34 +28,36 @@ public class PowerUp implements Collectable {
     private boolean visibility;
     private RectF rect;
     private Paint paint;
+    private Bitmap powerUp;
 
-    public PowerUp(int powerupType, UserSpaceship userSpaceship, float x, float y, float speedX, float speedY){
+    public PowerUp(Context context, int powerupType, UserSpaceship userSpaceship, float x, float y, float speedX, float speedY){
         this.powerupType = powerupType;
         visibility = true;
         this.x = x;
         this.y = y;
         this.speedX = speedX;
         this.speedY = speedY;
-        width = 100;
-        height = 100;
         paint = new Paint();
         switch (powerupType){
             case SHIELD:
-                paint.setColor( Color.BLACK);
+                powerUp = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_shield);
                 break;
             case HEALTH_REGEN:
-                paint.setColor( Color.RED);
+                powerUp = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_repair);
                 break;
             case INF_BULLET:
-                paint.setColor( Color.WHITE);
+                powerUp = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_infinity);
                 break;
             case EXTRA_POINT:
-                paint.setColor( Color.CYAN);
+                powerUp = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_extra);
                 break;
             case EXTRA_BULLET:
-                paint.setColor(Color.rgb(30, 123, 32));
+                powerUp = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_bullet);
                 break;
         }
+
+        width = powerUp.getWidth();
+        height = powerUp.getHeight();
 
 
     }
@@ -110,8 +117,7 @@ public class PowerUp implements Collectable {
 
     @Override
     public void draw(Canvas c) {
-        //TODO
-        c.drawRect(x, y, x + width, y + height, paint);
+        c.drawBitmap(powerUp, x, y, null);
     }
 
     @Override
