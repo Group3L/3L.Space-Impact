@@ -43,4 +43,12 @@ public class MainMenu extends Activity {
         return super.onKeyDown(keyCode, event);
     }
 
+    public void startStore(View view) {
+        view.startAnimation(buttonClick);
+        Intent intent = new Intent(this, StoreActivity.class);
+        startActivity(intent);
+        this.overridePendingTransition(0, 0);
+
+    }
+
 }
