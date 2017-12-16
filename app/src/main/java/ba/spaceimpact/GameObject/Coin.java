@@ -20,13 +20,11 @@ public class Coin implements Collectable {
     Paint paint;
     boolean visibility;
 
-    public Coin( int amount, UserSpaceship userSpaceship, float x, float y,  float speedx, float speedY){
+    public Coin( int amount, UserSpaceship userSpaceship, float speedx, float speedY){
         this.amount = amount;
         this.userSpaceship = userSpaceship;
         paint = new Paint();
         paint.setColor(Color.YELLOW);
-        this.x = x;
-        this.y = y;
         width = 100;
         height = 100;
         this.speedX = speedx;

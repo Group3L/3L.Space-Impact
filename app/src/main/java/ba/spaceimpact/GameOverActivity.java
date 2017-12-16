@@ -29,34 +29,10 @@ public class GameOverActivity extends Activity {
         int s = getIntent().getIntExtra("Score", 0);
         int k = getIntent().getIntExtra("Killed enemy", 0);
         final int c = getIntent().getIntExtra("Coin", 0);
-        final int l = getIntent().getIntExtra("Level", 1);
 
         result = findViewById(R.id.result);
+        if( !win )result.setImageResource(R.drawable.you_lose_img);
 
-        nextButton = findViewById(R.id.nextButton);
-        nextButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-                GameData.setCoin(c);
-                GameData.save(GameOverActivity.this);
-                Intent intent = new Intent(GameOverActivity.this, StartLevelActivity.class);
-                intent.putExtra("LEVEL", "LEVEL" + (l + 1));
-                intent.putExtra("LEVELNO", l + 1);
-                startActivity( intent);
-                GameOverActivity.this.overridePendingTransition(0, 0);
-            }
-        });
-
-        if( !win ){
-            result.setImageResource(R.drawable.you_lose_img);
-            nextButton.setVisibility(View.GONE);
-        }
-        else{
-            if( !GameData.isLevelUnlocked(l + 1)){
-                GameData.unlockLevel(l + 1);
-            }
-        }
 
         score = findViewById(R.id.scoreText);
         score.setText("Score : " + s);
@@ -79,7 +55,18 @@ public class GameOverActivity extends Activity {
             }
         });
 
+        nextButton = findViewById(R.id.nextButton);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
 
+                GameData.setCoin(c);
+                GameData.save(GameOverActivity.this);
+                Intent intent = new Intent(GameOverActivity.this, GameActivity.class);
+                startActivity( intent);
+                GameOverActivity.this.overridePendingTransition(0, 0);
+            }
+        });
 
     }
 }
