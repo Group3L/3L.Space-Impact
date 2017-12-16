@@ -27,7 +27,7 @@ public class LevelCreator {
         int easyRatio = ENEMY_BEHAVIOUR_RATIO[level - 1][0], mediumRatio = easyRatio + ENEMY_BEHAVIOUR_RATIO[level-1][1];
         int enemyCount = level * 30;
         int coinNumber = random.nextInt(11) + 10;
-        int powerupCount = level * 6;
+        int powerupCount = level * 10;
 
         float posX;
         float posY2;
@@ -75,6 +75,8 @@ public class LevelCreator {
                 case 3: e = new PowerUp(context, PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
                 case 4: e = new PowerUp(context, PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
             }
+
+            gameObjects.add(e);
 
         }
 
