@@ -49,7 +49,7 @@ public class GameOverActivity extends Activity {
         });
 
         if( !win ){
-            result.setImageResource(R.drawable.you_lose_img);
+            result.setImageResource(R.drawable.lost2);
             nextButton.setVisibility(View.GONE);
         }
         else{
