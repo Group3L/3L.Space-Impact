@@ -19,13 +19,17 @@ public class GameActivity extends AppCompatActivity implements Serializable{
 
     GameEngine gameEngine;
     Button shoot;
+    int level;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
+
+        level = getIntent().getIntExtra("LEVEL", 1);
+
       //  setContentView(R.layout.activity_game);
-         setContentView( new GameView(this, this));
+         setContentView( new GameView(this, this, level));
     }
 
     public void setGameEngine( GameEngine ge){
@@ -39,6 +43,7 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         intent.putExtra("Score", score);
         intent.putExtra("Killed enemy", killedEnemyCount);
         intent.putExtra("Coin", coin);
+        intent.putExtra("Level", level);
         startActivity(intent);
         this.overridePendingTransition(0, 0);
     }

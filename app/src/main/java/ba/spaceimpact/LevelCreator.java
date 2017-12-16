@@ -11,9 +11,6 @@ import ba.spaceimpact.GameObject.GameObject;
 import ba.spaceimpact.GameObject.PowerUp;
 import ba.spaceimpact.GameObject.UserSpaceship;
 
-/**
- * Created by pc on 15.12.2017.
- */
 
 public class LevelCreator {
 
@@ -88,7 +85,7 @@ public class LevelCreator {
             posX2 = (float) (Math.random() * (pixelX + 1));
             posY2 = -700;
 
-            Coin coin = new Coin( random.nextInt(6) + 5, userSpaceship, 0, speedY);
+            Coin coin = new Coin( random.nextInt(6) + 5, userSpaceship, posX, posY, 0, speedY);
 
             //Checking if new object intersects with existing ones
             gameObjects = positionCheck(coin, gameObjects);

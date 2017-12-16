@@ -52,14 +52,25 @@ public class GameData implements Serializable{
         int damage = 1;
         int bulletCount = 50;
         int coin = 30;
-        GameData.gameDataObject = new GameDataObject( health, coin, damage, bulletCount);
+        boolean[] unlockedLevels = new boolean[4];
+        unlockedLevels[0] = true;
+
+        for( int i = 1; i < unlockedLevels.length; i++){
+            unlockedLevels[i] = false;
+        }
+
+        boolean lv1 = true, lv2 = false, lv3 = false, lv4 = false;
+
+
+        GameData.gameDataObject = new GameDataObject( health, coin, damage, bulletCount, unlockedLevels, lv1, lv2, lv3, lv4);
         // Try to find the file from directory and reload the object
         try {
             String fileName = "spaceimpact.bin";
             File file = new File(context.getFilesDir(), fileName);
             ObjectInputStream is = new ObjectInputStream( new FileInputStream(file));
             GameData.gameDataObject = (GameDataObject) is.readObject();
-            System.out.println(GameData.getUserSpaceship(context));
+            if( gameDataObject.getUnLockedLevels() == null) gameDataObject.setUnLockedLevels(unlockedLevels);
+
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         } catch (IOException e) {
@@ -97,6 +108,14 @@ public class GameData implements Serializable{
         gameDataObject.setBulletCount(bulletCount);
     }
 
+    public static void unlockLevel(int levelNo){
+       // if( levelNo -1 >= 1 && levelNo-1 < gameDataObject.getUnLockedLevels().length && isLevelUnlocked(levelNo) != true && isLevelUnlocked(levelNo-1))
+            gameDataObject.unlockLevel(levelNo);
+    }
 
-
+    public static boolean isLevelUnlocked(int levelNo){
+        //if( levelNo -1 >= 1 && levelNo-1 < gameDataObject.getUnLockedLevels().length )return gameDataObject.getUnLockedLevels()[levelNo-1];
+        //else return false;
+        return gameDataObject.isLevelUnlocked(levelNo);
+    }
 }

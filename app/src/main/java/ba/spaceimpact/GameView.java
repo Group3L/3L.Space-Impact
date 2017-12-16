@@ -29,9 +29,11 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
     // The player's bullet
     // public static Bullet[] bullet = new Bullet[20];
     private int ilo = 0;
+    private int level;
 
-    public GameView(Context context, GameActivity gameActivity){
+    public GameView(Context context, GameActivity gameActivity, int level){
         super(context);
+        this.level = level;
         this.context = context;
         holder = this.getHolder();
         holder.addCallback(this);
@@ -51,7 +53,7 @@ public class GameView extends SurfaceView implements SurfaceHolder.Callback{
         if(GameData.getUserSpaceship(context) == null) System.out.println("Userspaceship is null");
         else System.out.println("User spaceship is not null");
         System.out.println(GameData.getUserSpaceship(context));
-        gameEngine = new GameEngine(context, this, GameData.getUserSpaceship(context), gameActivity);
+        gameEngine = new GameEngine(context, this, GameData.getUserSpaceship(context), gameActivity, level);
         /*for(int i = 0; i < bullet.length; i++){
             bullet[i] = new Bullet(screenY, true, 1);
         }*/
