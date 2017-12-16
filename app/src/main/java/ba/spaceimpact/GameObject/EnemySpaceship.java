@@ -8,6 +8,8 @@ import android.graphics.RectF;
 import android.os.Handler;
 import android.util.Log;
 
+import java.util.Random;
+
 import ba.spaceimpact.EasyBehaviour;
 import ba.spaceimpact.EnemyBehaviour;
 import ba.spaceimpact.GameEngine;
@@ -33,6 +35,8 @@ public class EnemySpaceship implements NPC{
     public enum enemyType {EASY, MEDIUM, HARD;}
 
 
+
+
     public EnemySpaceship(int health, int damage, float startingX,
                           float startingY, final float speedX, float speedY,
                           Context context, enemyType type){
@@ -43,13 +47,8 @@ public class EnemySpaceship implements NPC{
         this.speedX = speedX;
         this.speedY = speedY;
         this.context = context;
-        /*
-        * Bitmap b = BitmapFactory.decodeByteArray(imageAsBytes, 0, imageAsBytes.length)
-            profileImage.setImageBitmap(Bitmap.createScaledBitmap(b, 120, 120, false));
-        * */
         spaceship = BitmapFactory.decodeResource(context.getResources(), R.drawable.rsz_1enemy);
         rect = new RectF();
-
         width = spaceship.getWidth();
         height = spaceship.getHeight();
 
@@ -57,13 +56,21 @@ public class EnemySpaceship implements NPC{
         rect.top = y;
         rect.right = x + width;
         rect.bottom = y + height;
-        
-        if(type == enemyType.EASY)
+
+        if(type == enemyType.EASY){
             enemyStrategy = new EasyBehaviour();
-        else if(type == enemyType.MEDIUM)
+        }
+
+        else if(type == enemyType.MEDIUM){
             enemyStrategy = new MediumBehaviour();
-        else if(type == enemyType.HARD)
+
+
+        }
+        else if(type == enemyType.HARD){
             enemyStrategy = new HardBehaviour();
+
+
+        }
         else
             enemyStrategy = new MediumBehaviour();
     }
@@ -73,6 +80,8 @@ public class EnemySpaceship implements NPC{
         return rect;
     }
 
+
+
     @Override
     public void move(float x, float y) {
         this.x = x;
@@ -80,9 +89,25 @@ public class EnemySpaceship implements NPC{
 
     }
 
-    @Override
-    public void shoot() {
+    public Bitmap getSpaceship() {
+        return spaceship;
+    }
 
+    public void setWidth(int width) {
+        this.width = width;
+    }
+
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public void setSpaceship(Bitmap spaceship) {
+        this.spaceship = spaceship;
+    }
+
+    @Override
+    public Bullet shoot() {
+        return new Bullet( GameView.screenY, false, 1);
     }
 
     //@Override
@@ -97,7 +122,6 @@ public class EnemySpaceship implements NPC{
 
     //@Override
     public void update() {
-
       //  checkCollisionWithBullets();
         float[] positions = enemyStrategy.move(x,y,speedY);
         //move( x + speedX, y + speedY);
@@ -107,7 +131,6 @@ public class EnemySpaceship implements NPC{
         rect.top = y;
         rect.right = x + width;
         rect.bottom = y + height;
-
         if( x > GameView.screenX) {
             visible = false;
         }

@@ -25,7 +25,8 @@ public class GameActivity extends AppCompatActivity implements Serializable{
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
       //  setContentView(R.layout.activity_game);
-         setContentView( new GameView(this, this));
+        int level = getIntent().getIntExtra("LEVEL", 0);
+         setContentView( new GameView(this, this, level));
     }
 
     public void setGameEngine( GameEngine ge){

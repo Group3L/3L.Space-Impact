@@ -105,7 +105,7 @@ public class PowerUp implements Collectable {
                 }, 5000);
                 break;
             case EXTRA_BULLET:
-                userSpaceship.setBulletCount( userSpaceship.getBulletCount() + r.nextInt(20) + 10);
+                userSpaceship.setBulletCount( userSpaceship.getBulletCount() + r.nextInt(21) + 10);
                 break;
 
         }

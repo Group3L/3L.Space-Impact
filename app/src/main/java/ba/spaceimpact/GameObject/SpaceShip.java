@@ -9,7 +9,7 @@ import android.graphics.RectF;
 public interface SpaceShip extends GameObject{
 
     public void move(float x, float y);
-    public void shoot();
+    public Bullet shoot();
     public void getHit(int amount);
 
 }

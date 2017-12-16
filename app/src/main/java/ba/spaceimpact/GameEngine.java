@@ -22,10 +22,6 @@ import java.util.ArrayList;
 import java.util.Random;
 import static ba.spaceimpact.GameView.screenY;
 
-/**
- * Created by pc on 31.10.2017.
- */
-
 public class GameEngine implements Runnable, Serializable {
 
     private final int ENEMY_KILL_SCORE = 50;
@@ -44,15 +40,17 @@ public class GameEngine implements Runnable, Serializable {
     public static final double DOCK_RATIO = 0.2;
     private Rect shootButtonRect;
     private GameActivity gameActivity;
-    private Bullet[] bullet = new Bullet[150];
+   // private Bullet[] bullet = new Bullet[150];
+    ArrayList<Bullet> bullet;
+    private int shootingCounter;
     private int ilo = 0;//?
     int killedEnemyCount;
 
-    public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity){
+    public GameEngine(Context context, SurfaceView surfaceView, UserSpaceship userSpaceship, GameActivity gameActivity, int level){
         this.context = context;
         this.surfaceView = surfaceView;
         surfaceHolder = surfaceView.getHolder();
-
+        shootingCounter = 0;
         this.userSpaceship = userSpaceship;
 
 
@@ -61,13 +59,14 @@ public class GameEngine implements Runnable, Serializable {
         pixelX = display.getWidth();
         pixelY = display.getHeight();
 
-        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, 50, 5,  10, 1); //TODO level will be changed
+        gameObjects = LevelCreator.setGameObjects(context, userSpaceship, pixelX, pixelY, level);
 
         this.userSpaceship.move((this.userSpaceship.getWidth() + pixelX) / 2, (float)0.6 * pixelY);
 
-        for(int i = 0; i < bullet.length; i++){
-            bullet[i] = new Bullet(screenY, true, 1); //TODO 1 will be changed
-        }
+        /*for(int i = 0; i < bullet.length; i++){
+            bullet[i] = new Bullet(screenY, true, 1);
+        } */
+        bullet = new ArrayList<>();
 
         System.out.println("X: " + (this.userSpaceship.getWidth() + pixelX) / 2);
         System.out.println("Y: " + (float)0.6 * pixelY);
@@ -77,20 +76,47 @@ public class GameEngine implements Runnable, Serializable {
         this.gameActivity = gameActivity;
     }
 
+    @Override
+    public void run() {
+        while (playing) {
+
+            //to update the frame
+            update();
+
+            //to draw the frame
+            draw();
+
+            //to control
+            control();
+        }
+    }
+
+
     public void setBackgroundImage(Bitmap backgroundImage){
         background = backgroundImage;
     }
 
-    public void shoot( boolean infiniteShoot){
-        if (userSpaceship.isInfiniteShoot() == infiniteShoot && userSpaceship.getBulletCount() > 0 && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), bullet[ilo].UP)) {
+ /*   public void shoot( boolean infiniteShoot){
+        if (userSpaceship.isInfiniteShoot() == infiniteShoot && userSpaceship.getBulletCount() > 0 ){// && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), Bullet.UP)) {
+
             ilo++;
-            userSpaceship.shoot(!userSpaceship.isInfiniteShoot());
+            userSpaceship.shoot(!userSpaceship.isInfiniteShoot(), pixelY).shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), Bullet.UP);
             if (ilo == bullet.length) {
                 ilo = 0;
             }
         }
 
+    }*/
+
+    public void shoot( boolean infiniteShoot){
+        if (userSpaceship.isInfiniteShoot() == infiniteShoot && userSpaceship.getBulletCount() > 0 ){// && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), Bullet.UP)) {
+            Bullet b = userSpaceship.shoot(!userSpaceship.isInfiniteShoot(), pixelY);
+            bullet.add(b);
+            b.shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY());
+        }
+
     }
+
 
     private boolean isEnemyLeft(){
         boolean result = false;
@@ -102,25 +128,11 @@ public class GameEngine implements Runnable, Serializable {
     }
 
 
-    @Override
-    public void run() {
-        while (playing) {
-
-
-            //to update the frame
-            update();
-
-
-            //to draw the frame
-            draw();
-
-            //to control
-            control();
-        }
-    }
 
 
     public void draw(){
+        String scoreStr;
+        Paint p;
         try{
             if(surfaceHolder.getSurface().isValid()){
                 canvas = surfaceHolder.lockCanvas();
@@ -129,8 +141,8 @@ public class GameEngine implements Runnable, Serializable {
                         canvas.drawBitmap(background, 0, 0, null);
                 }
 
-                String scoreStr = "Score: " + userSpaceship.getScore() + "\nCoin : " + userSpaceship.getCoin();
-                Paint p = new Paint();
+                scoreStr = "Score: " + userSpaceship.getScore() + "\nCoin : " + userSpaceship.getCoin();
+                p = new Paint();
                 p.setTextSize(48f);
                 p.setColor(Color.WHITE);
 
@@ -146,13 +158,19 @@ public class GameEngine implements Runnable, Serializable {
 
                 Paint paint = new Paint();
                 paint.setColor(Color.YELLOW);
-                for(int i = 0; i < bullet.length; i++){
+
+                /*for(int i = 0; i < bullet.length; i++){
                     if(bullet[i].getStatus()) {
                         canvas.drawRect(bullet[i].getRect(), paint);
                     }
+                } */
+
+                for(int i = 0; i < bullet.size(); i++){
+                    bullet.get(i).draw(canvas);
                 }
 
                 drawBottomDock( canvas);
+
 
                 surfaceHolder.unlockCanvasAndPost(canvas);
             }
@@ -194,6 +212,8 @@ public class GameEngine implements Runnable, Serializable {
     }
 
     public void update(){
+        shootingCounter++;
+        if(shootingCounter > 2000000)shootingCounter = 0;
 
         for (int i = 0; i < gameObjects.size(); i++) {
             gameObjects.get(i).update();
@@ -215,33 +235,52 @@ public class GameEngine implements Runnable, Serializable {
         //and it won't use user's bullets
         shoot(true);
 
-        // Update the players bullet
-        for(int i = 0; i < bullet.length; i++){
-            if(bullet[i].getStatus()) {
-                bullet[i].update(60);
+        for(int i = 0; i < bullet.size(); i++){
+            if(bullet.get(i).getStatus()) {
+                bullet.get(i).update(60);
             }
         }
 
         // Has the player's bullet hit the top of the screen
-        for(int i = 0; i < bullet.length; i++){
-            if(bullet[i].getImpactPointY() < 0){
-                bullet[i].setInactive();
+        for(int i = 0; i < bullet.size(); i++){
+            if(bullet.get(i).getImpactPointY() < 0){
+                bullet.get(i).setInactive();
             }
         }
 
         //collision between bullets and spaceships
-       for( int j = 0; j < gameObjects.size(); j++){
+        for( int j = 0; j < gameObjects.size(); j++){
             if( gameObjects.get(j) instanceof EnemySpaceship){
-                for( int i = 0; i < bullet.length; i++){
-                    if(bullet[i].getStatus() && gameObjects.get(j).getRect().intersect(bullet[i].getRect())){
+                for( int i = bullet.size()-1; i >= 0; i--){
+                    if(bullet.get(i).isUserBullet() && bullet.get(i).getStatus() && gameObjects.get(j).getRect().intersect(bullet.get(i).getRect())){
                         Log.d("Collision","Between Enemy and Bullet");
-                        ((EnemySpaceship) gameObjects.get(j)).getHit(bullet[i].getDamage());
-                        bullet[i].setInactive();
+                        ((EnemySpaceship) gameObjects.get(j)).getHit(bullet.get(i).getDamage());
+                        bullet.get(i).setInactive();
+                        bullet.remove(i);
                     }
                 }
             }
         }
 
+       /* for(int i = 0; i < gameObjects.size(); i++) {
+            GameObject g = gameObjects.get(i);
+            if( g instanceof EnemySpaceship && (((EnemySpaceship) g).geteType()) != EnemySpaceship.enemyType.EASY && shootingCounter == ((EnemySpaceship)g).getShootingDelay() &&
+                    g.getVisible() && g.getY() > 0 ){
+                shootingCounter = 0;
+                Bullet b = ((EnemySpaceship) g).shoot();
+                bullet.add(b);
+                b.shoot(g.getX() + ((EnemySpaceship) g).getWidth() / 2, g.getY());
+
+            }
+
+            if (g instanceof EnemySpaceship && (((EnemySpaceship) g).geteType()) != EnemySpaceship.enemyType.EASY ){
+                if ( g instanceof EnemySpaceship && (((EnemySpaceship) g).geteType()) != EnemySpaceship.enemyType.EASY){// && bullet[ilo].shoot(userSpaceship.getX() + userSpaceship.getWidth() / 2, userSpaceship.getY(), Bullet.UP)) {
+                    Bullet b = ((EnemySpaceship)g).shoot();
+                    bullet.add(b);
+                    b.shoot(g.getX() + ((EnemySpaceship) g).getWidth() / 2, g.getY());
+                }
+            }
+        }*/
         //collision detection
         for (int i = 0; i < gameObjects.size(); i++) {
             if(isEnemyLeft() && userSpaceship.getRect().intersect(gameObjects.get(i).getRect())){
@@ -252,6 +291,7 @@ public class GameEngine implements Runnable, Serializable {
                 i--;
             }
         }
+
         if(!isEnemyLeft()) {
             Random random = new Random();
             pause();
@@ -263,6 +303,7 @@ public class GameEngine implements Runnable, Serializable {
             System.out.println("After gameover");
             pause();
         }
+
 
     }
 

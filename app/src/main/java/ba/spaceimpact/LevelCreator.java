@@ -1,6 +1,7 @@
 package ba.spaceimpact;
 
 import android.content.Context;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -22,6 +23,7 @@ public class LevelCreator {
         ArrayList<GameObject> gameObjects = new ArrayList<>();
         Random random = new Random();
 
+        Log.d("LEVEL", level + "");
         int easyRatio = ENEMY_BEHAVIOUR_RATIO[level - 1][0], mediumRatio = easyRatio + ENEMY_BEHAVIOUR_RATIO[level-1][1];
         int enemyCount = level * 30;
         int coinNumber = random.nextInt(11) + 10;
@@ -73,8 +75,6 @@ public class LevelCreator {
                 case 3: e = new PowerUp(context, PowerUp.INF_BULLET, userSpaceship, posX, posY, 0, speedY); break;
                 case 4: e = new PowerUp(context, PowerUp.EXTRA_BULLET, userSpaceship, posX, posY, 0, speedY); break;
             }
-
-            gameObjects = positionCheck(e, gameObjects);
 
         }
 

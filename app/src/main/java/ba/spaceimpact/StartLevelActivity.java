@@ -16,18 +16,20 @@ public class StartLevelActivity extends Activity {
     TextView levelText;
     Button levelStartButton;
     private AlphaAnimation buttonClick = new AlphaAnimation(1F, 0.8F);
-
+    int lv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_level);
 
-        Bundle extras = getIntent().getExtras();
-        String level = extras.getString("LEVEL");
-
+        String level = getIntent().getStringExtra("LEVEL");
+        lv = getIntent().getIntExtra("LEVELNO", 1);
 
         levelStartButton = (Button) findViewById(R.id.startlevel_button);
+        GameData.load(this);
+
+        if( !GameData.isLevelUnlocked(lv))levelStartButton.setEnabled(false);
         levelText = (TextView) findViewById(R.id.level_tv);
 
         levelText.setText(level);
@@ -44,6 +46,7 @@ public class StartLevelActivity extends Activity {
         v.startAnimation(buttonClick);
 
         Intent intent = new Intent(this, GameActivity.class);
+        intent.putExtra("LEVEL", lv);
         startActivity(intent);
 
     }

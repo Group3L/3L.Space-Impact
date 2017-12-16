@@ -1,5 +1,8 @@
 package ba.spaceimpact.GameObject;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.RectF;
 
 
@@ -10,10 +13,11 @@ public class Bullet{
 
     private RectF rect;
     private boolean userBullet;
-    public final int UP = 0;
+    public static final int UP = -1;
+    public static final int DOWN = 1;
     private int damage;
+    private Paint paint;
 
-    int heading = -1;
     float speed =  1500;
 
     private int width = 5;
@@ -26,7 +30,9 @@ public class Bullet{
         this.userBullet = userBullet;
         height = screenY / 100;
         isActive = false;
-
+        paint = new Paint();
+        if( userBullet) paint.setColor(Color.YELLOW);
+        else paint.setColor(Color.RED);
         rect = new RectF();
     }
 
@@ -56,11 +62,11 @@ public class Bullet{
         return isActive;
     }
 
-    public boolean shoot(float startX, float startY, int direction) {
+    public boolean shoot(float startX, float startY) {
         if (!isActive) {
             x = startX;
             y = startY;
-            heading = direction;    // Direction will be needed for the enemies bullets, when we implement it
+
             isActive = true;
             return true;
         }
@@ -71,7 +77,10 @@ public class Bullet{
     public void update(long fps){
 
         //if(heading == UP){                // The commented parts will be needed when we implement
-        y = y - speed / fps;            //  the shooting part for the enemies
+        if(userBullet)
+            y = y - speed / fps;            //  the shooting part for the enemies
+        else
+            y = y + speed / fps;
         //}else{
         //    y = y + speed / fps;
         // }
@@ -81,7 +90,11 @@ public class Bullet{
         rect.right = x + width;
         rect.top = y;
         rect.bottom = y + height;
+        if(y < 0)isActive = false;
+    }
 
+    public void draw(Canvas c){
+        if(isActive)c.drawRect(rect, paint);
     }
 
 

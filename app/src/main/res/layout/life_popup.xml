@@ -19,7 +19,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="By choosing this upgrade the amount will be increased by 1"
+        android:text="By choosing this upgrade the amount will be increased by 3 for 80 coins."
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
@@ -27,8 +27,8 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <Button
-        android:onClick="lifeUpgrade"
         android:id="@+id/lifebuttonupgrade"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

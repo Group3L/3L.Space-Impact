@@ -19,7 +19,7 @@
         android:layout_marginStart="10dp"
         android:layout_marginTop="10dp"
         android:gravity="center"
-        android:text="By choosing this upgrade the amount of bullets will increase with 100 bullets"
+        android:text="By choosing this upgrade the amount of bullets will increase with 10 bullets for 50 coins."
         android:textAlignment="center"
         android:textColor="@android:color/white"
         android:textStyle="bold"
